@@ -114,9 +114,12 @@ WORKDIR /app/payserai/document_index/vespa/app_config
 RUN zip -r /app/payserai/vespa-app.zip .
 WORKDIR /app
 
+
 ENV PYTHONPATH /app
 
 # Default command which does nothing
 # This container is used by api server and background which specify their own CMD
+CMD ["alembic", "upgrade", "head"]
+
 CMD ["tail", "-f", "/dev/null"]
 

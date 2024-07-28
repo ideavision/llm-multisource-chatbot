@@ -3,7 +3,7 @@ from enum import Enum as PyEnum
 from typing import Any
 from typing import List
 from typing import Literal
-from typing import NotRequired
+from typing_extensions import NotRequired
 from typing import Optional
 from typing import TypedDict
 from uuid import UUID
@@ -311,9 +311,9 @@ class Connector(Base):
         back_populates="connector",
         cascade="all, delete-orphan",
     )
-    documents_by_connector: Mapped[
-        List["DocumentByConnectorCredentialPair"]
-    ] = relationship("DocumentByConnectorCredentialPair", back_populates="connector")
+    documents_by_connector: Mapped[List["DocumentByConnectorCredentialPair"]] = (
+        relationship("DocumentByConnectorCredentialPair", back_populates="connector")
+    )
     index_attempts: Mapped[List["IndexAttempt"]] = relationship(
         "IndexAttempt", back_populates="connector"
     )
@@ -339,9 +339,9 @@ class Credential(Base):
         back_populates="credential",
         cascade="all, delete-orphan",
     )
-    documents_by_credential: Mapped[
-        List["DocumentByConnectorCredentialPair"]
-    ] = relationship("DocumentByConnectorCredentialPair", back_populates="credential")
+    documents_by_credential: Mapped[List["DocumentByConnectorCredentialPair"]] = (
+        relationship("DocumentByConnectorCredentialPair", back_populates="credential")
+    )
     index_attempts: Mapped[List["IndexAttempt"]] = relationship(
         "IndexAttempt", back_populates="credential"
     )
@@ -725,7 +725,6 @@ class ChannelConfig(TypedDict):
     respond_tag_only: NotRequired[bool]  # defaults to False
     respond_team_member_list: NotRequired[list[str]]
     answer_filters: NotRequired[list[AllowedAnswerFilters]]
-
 
 
 class TaskQueueState(Base):
