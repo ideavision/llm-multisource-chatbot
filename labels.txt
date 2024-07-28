@@ -1,0 +1,23 @@
+labels:
+["gpt-hr", "gpt-aml","gpt-kyc","gpt-compliance","gpt-dev", "gpt-servers"]
+
+Spaces:
+    HR:
+        https://intranet.paysera.net/display/paysera/PAYSERA+INTERNATIONAL
+        https://intranet.paysera.net/display/EVP
+        https://intranet.paysera.net/display/HR/
+
+    AML:
+        https://intranet.paysera.net/display/FNTT/
+
+    KYC:
+        https://intranet.paysera.net/display/FNTT/
+
+    COMPLIANCE:
+    
+    DEV:
+        https://intranet.paysera.net/display/PD/
+
+    SERVERS:
+        https://intranet.paysera.net/display/devops/
+        https://intranet.paysera.net/display/PROG/

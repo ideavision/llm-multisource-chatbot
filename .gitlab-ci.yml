@@ -1,0 +1,106 @@
+image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.11.4
+
+
+include:
+  - project: 'paysera/ci-templates'
+    file: prepare/npm-install.yaml
+  - project: 'paysera/ci-templates'
+    file: build/kaniko.yaml
+  # - project: 'paysera/ci-templates'
+  #   file: 'deploy/webistrano.yaml'
+  # - project: 'paysera/ci-templates'
+  #   file: 'stages.yaml'
+  - project: 'paysera/ci-templates'
+    file: 'python.yaml'
+    
+
+
+
+safety:
+  allow_failure: true
+
+unittest:
+  stage: Test
+  # before_script:
+  #   # - python -m venv venv
+  #   # - . venv/bin/activate
+  #   - pip install --upgrade pip
+  #   - pip install -r src/requirements.txt
+    #- pip install pytest-cov
+  script:
+    # - . venv/bin/activate
+    #- py.test ./tests/test.py --cov=./src/* --cov-report=
+    #- coverage report -m
+    - python3 -m unittest discover -v backend/tests
+    # - coverage run --source=src -m pytest -v tests
+  allow_failure: false
+
+
+compare-coverage:
+  allow_failure: true
+
+prepare-test-job-image:
+  rules:
+    - when: never
+
+clean-test-job-image:
+  rules:
+    - when: never
+
+build-prod-job-image:
+  rules:
+    - when: never
+
+
+.build-image:
+  extends: .kaniko
+  needs: []
+  dependencies: []
+  rules:
+    - when: always
+
+build-backend-image:
+  extends: .build-image
+  variables:
+    DOCKERFILE: './backend/Dockerfile'
+    IMAGE_NAME: 'payserai-backend'
+
+build-web-image:
+  extends: .build-image
+  variables:
+    DOCKERFILE: './web/Dockerfile'
+    IMAGE_NAME: 'payserai-web-server'
+
+
+
+# build-nginx-image:
+#   extends: .build-image
+#   variables:
+#     DOCKERFILE: 'docker/nginx/Dockerfile'
+#     IMAGE_NAME: 'nginx'
+
+# .build-prod-image:
+#   extends: .kaniko
+#   before_script:
+#     - pwd && ls -la
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "master"
+#       when: always
+#     - if: $CI_COMMIT_BRANCH == "payserai-latest"
+#       when: always
+#     - if: $CI_PIPELINE_SOURCE == "schedule"
+#       when: always
+#     - when: never
+
+
+deploy:
+  extends: .deploy
+  # needs:
+  #   - job: build-backend-image
+  #     optional: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "payserai-latest"
+      when: always
+    - when: never
