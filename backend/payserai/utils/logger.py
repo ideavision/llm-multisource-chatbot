@@ -2,7 +2,7 @@ import logging
 import os
 from collections.abc import MutableMapping
 from typing import Any
-
+from typing import Optional
 from payserai.configs.app_configs import LOG_LEVEL
 
 
@@ -11,7 +11,7 @@ class IndexAttemptSingleton:
     unique identifier for this indexing attempt. For things like the API server,
     main background job (scheduler), etc. this will not be used."""
 
-    _INDEX_ATTEMPT_ID: None | int = None
+    _INDEX_ATTEMPT_ID: Optional[int] = None
 
     @classmethod
     def get_index_attempt_id(cls) -> None | int:
